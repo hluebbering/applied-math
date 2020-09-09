@@ -1,0 +1,189 @@
+---
+output: 
+  html_document: 
+    highlight: kate
+    theme: paper
+    css: styles.css
+bibliography: citation/citation.bib
+nocite: '@*'
+---
+
+\ 
+
+# Equilibrium points and stability
+
+
+
+<div class="a">
+
+Equilibrium points of an autonomous ODE are defined at $x^*=0$ such that $f(x^*)=0$
+
+</div>
+
+\ 
+
+
+### **Why do we want to find the equilibrium points?**
+
+<div class="b1">
+
+Beginning at a point $x^*$ such that $f(x^*)=0$, the system, if unperturbed, will remain at $x^*$. Hence, these points determine the long-term behavior of a differential equation.
+</div>
+
+
+\ 
+
+--------------------------------
+
+**Example.** Find the equilibrium points to the following ODE:
+
+$$dy/dt=4-y^2$$
+
+**Solution.**
+
+<div class="b1">
+
+$$ 
+f(y_*)=0 \\
+\Rightarrow 4-y_*^2=0 \\
+\Rightarrow (2-y_*)(2+y_*)=0 \\
+\Rightarrow y_*=-2,2
+$$
+
+</div>
+
+\ 
+
+--------------------------------
+
+
+### **Stability of the equilibrium points**
+
+
+
+Are the equilibrium points `stable` or `unstable`?
+
+<div class="a">
+
+$\Rightarrow$ **stable fixed point**: system placed a small distance away from fixed point will continue to remain close to fixed point
+
+$\Rightarrow$ **unstable fixed point**: a small perturbation away from the fixed point causes solution to diverge
+
+</div>
+
+\ 
+
+<div class="b1">
+
+**formal definition of stability:** if for every $\epsilon>0$, there exists $\delta>0$ such that whenever $|y(0)-y_*|<\delta$ then $|y(t)-y_*|<\epsilon$ for all $t$.
+
+</div>
+
+
+
+--------------------------------
+
+
+<div class="a1">
+**There are 2 methods for determining the stability of a fixed point**
+</div>
+
+\ 
+
+##### **Method 1.** Phase Portrait Analysis
+
+
+
+A **phase portrait** plots the derivative against the dependent variable. Plotting $\dot x$ vs $x$ helps in locating **equilibrium points**: locations where $f$ crosses the $\mathcal x-\text{axis}$ are the equilibrium points.
+
+
+<div class="b1">
+
+$\star$ We can represent the flow of $f$ in the phase portrait by placing arrows along the $\text{dependent variable}$ axis indicating whether $f$ would be increasing or decreasing. 
+
+* point where arrows on both side of the equilibrium point towards each other $\rightarrow\;\; \leftarrow$ denotes stability 
+
+* point where arrows on both side of the equilibrium point away from each other $\leftarrow\;\; \rightarrow$ denotes instability 
+
+</div>
+
+\ 
+
+--------------------------------
+
+**Example.** Plot the phase portrait for $\frac{dy}{dt}=4-y^2$: 
+
+
+```{r echo = F, fig.dim = c(7, 5), message=FALSE}
+library(phaseR)
+example1_phasePortrait  <- phasePortrait(
+  example1, ylim = c(-5, 5))
+```
+
+
+$\bigstar$ **Graphical Interpretation.**
+
+<div class="b1">
+
+$\Rightarrow$ equilibrium point $y^*=2$ is stable
+
+$\Rightarrow$ equilibrium point $y^*=-2$ is unstable
+
+</div>
+
+\ 
+
+
+$\bigstar$ **Note.** trajectories plotted above shows that solutions converge towards $y=2$, but away from $y=-2$
+
+\ 
+
+$\Longrightarrow$ **Uniqueness Theorum.** 
+
+<div class="a">
+
+The above method assumes $f$ to be continuous & differentiable. Hence, conditions on $f$ guarantee only **unique solutions** to the autonomous differential equation. Therefore, the **solution curves cannot touch**, expect when they converge at equilibrium points.
+
+</div>
+
+---------------------------
+
+
+##### **Method 2.** Taylor Series Expansion
+
+The second method for performing stability analyses utilizes the Taylor Series expansion of $f$. 
+
+
+<div class="b1">
+
+**Assumptions:** Suppose we are a small distance $\delta(0)$ away from fixed point $y_*$ 
+
+$\quad \longrightarrow y(0)=y_*+\delta(0)$
+
+$\quad \longrightarrow y(t)=y_*+\delta(t)$. 
+
+
+Then the Taylor Series of $f$ can be written as:
+
+$$ f(y_*+\delta)=f(y_*)+\delta\frac{\partial f}{\partial y}(y_*)+o(\delta), $$
+
+</div>
+
+\ 
+
+The `phaseR` package uses stability analysis to classify equilibrium points. Specifically, the package uses the **Taylor Series method** to define equilibrium points for a 1 dimensional ODE system.
+
+**$\bigstar$ Note: ** `ystar` input representing the point at which to perform stability analysis 
+
+
+
+
+
+
+
+
+
+
+
+
+
