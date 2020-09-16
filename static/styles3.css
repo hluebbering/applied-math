@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&family=Roboto+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Trocchi&display=swap');
+
+h1 {
+  font-family: 'Trocchi', sans-serif;
+  font-size:16px;
+  padding-top:12px;
+  padding-bottom: 12px;
+}
+
+h2 {
+  font-family: 'Open Sans', sans-serif;
+  font-size:16px;
+  padding: 10px;
+  text-indent:4px;
+}
+h3 {
+  font-family: 'Open Sans', sans-serif;
+  font-size:14px;
+  color:#668073;
+  padding: 8px;
+  text-indent:8px;
+  text-shadow: 4px 4px 4px #aaa;
+}
+
+
+h4 {
+  font-family: 'Open Sans', sans-serif;
+  font-size:12px;
+  padding: 10px;
+  text-indent:8px;
+}
+
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #fff;
+  white-space: normal;
+  text-indent:20px;
+  font-size: 10px;
+  
+}
+.a1 {
+  color: black;
+  border-radius: 25px;
+  width: 90%;
+  padding: 2px;
+  white-space:normal;
+  background: #bdd7ff;
+  font-size: 12px;
+  margin: auto;
+  box-shadow: 4px 4px 4px #aaa;
+}
+.a2 {
+  color: black;
+  border-radius: 25px;
+  width: 90%;
+  padding: 2px;
+  white-space:normal;
+  background: linear-gradient(60deg,#F0FFFF,#faffff);
+  font-size: 10px;
+  margin: auto;
+  box-shadow: 4px 4px 4px #aaa;
+}
+.b1 {
+  color: black;
+  border-radius: 25px;
+  width: 90%;
+  padding: 2px;
+  white-space:normal;
+  background: #f9fafb;
+  font-size: 10px;
+  margin: auto;
+  box-shadow: 4px 4px 4px #aaa;
+}
+
+.b2 {
+  color: black;
+  border-radius: 25px;
+  width: 90%;
+  padding: 2px;
+  white-space:normal;
+  background: #f9fafb;
+  font-size: 8px;
+  margin: auto;
+  box-shadow: 4px 4px 4px #aaa;
+}
