@@ -4,7 +4,6 @@ output:
     toc: yes
     toc_float: yes
     css: static/phase-r.css
-    keep_md: yes
 bibliography: static/citation/phase-r-citation.bib
 nocite: '@*'
 ---
