@@ -10,6 +10,7 @@ two-dimensional autonomous ODE systems (Grayling 2014).
 
 <div class="a">
 
+
 Consider the one-dimensional autonomous ODE:
 \[\frac{dy}{dt}=y(1-y)(2-y)\]
 
