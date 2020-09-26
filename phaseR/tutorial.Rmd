@@ -3,8 +3,8 @@ output:
   html_document: 
     highlight: kate
     theme: paper
-    css: styles.css
-bibliography: citation/citation.bib
+    css: static/phase-r.css
+bibliography: static/citation/phase-r-citation.bib
 nocite: '@*'
 ---
 
