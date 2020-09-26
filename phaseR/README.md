@@ -43,28 +43,7 @@ $$\longrightarrow \hat y= \frac{dy}{dt}$$
 The following plots the flow field and various trajectories, adding **horizontal lines at equilibrium points**:
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, out.width=350}
-library(phaseR)
-
-example2_flowField  <- flowField(
-  example2, 
-  xlim = c(0, 4), 
-  ylim = c(-1, 3), 
-  system ="one.dim", 
-  add = FALSE)
-
-grid()
-
-example2_nullclines <- nullclines(
-  example2, xlim = c(0, 4), ylim = c(-1, 3), system = "one.dim")
-
-example2_trajectory <- trajectory(
-  example2, 
-  y0 = c(-0.5, 0.5, 1.5, 2.5), 
-  tlim = c(0, 4), 
-  system = "one.dim")
-
-```
+<img src="example1_files/figure-html/unnamed-chunk-1-1.png" width="350" />
 
 
 ### Find Fixed Points
@@ -90,10 +69,7 @@ Plotting the **phase portrait**, we find that $y^*=0$ and $y^*=2$ are unstable; 
 
 \ 
 
-```{r, echo = F, message=FALSE, warning=FALSE, fig.dim = c(7, 5)}
-example2_phasePortrait <- phasePortrait(
-  example2, ylim = c(-0.5, 2.5))
-```
+![](example1_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 
 
 
@@ -115,16 +91,17 @@ $$ \frac{d}{dy}\left.\left(\frac{dy}{dt}\right)\right|_{y=y^*} = 3y^{*^2} - 6y^*
 We draw the same conclusion as from the phase portrait. We can confirm the Taylor analysis using `stability()` to check the **stability of each equilibrium point**:
 
 
-```{r, echo = F}
-example2_stability_1 <- stability(
-  example2, ystar = 0, system = "one.dim")
 
-example2_stability_2 <- stability(
-  example2, ystar = 1, system = "one.dim")
+```
+## discriminant = 2, classification = Unstable
+```
 
-example2_stability_3 <- stability(
-  example2, ystar  = 2, system = "one.dim")
+```
+## discriminant = -1, classification = Stable
+```
 
+```
+## discriminant = 2, classification = Unstable
 ```
 
 
@@ -216,30 +193,7 @@ $$ \frac{dy}{dt} = \beta y\left(1-\frac{y}{K}\right). $$
 Letting $\beta=1$ and $K=2$, the following plots the flow field and several trajectories, along with added horizontal lines to indicate equilibrium points.
 
 
-```{r echo=FALSE, out.width=300, message=FALSE}
-library(phaseR)
-logistic_flowField  <- flowField(
-  logistic,
-  xlim= c(0, 5),
-  ylim= c(-1, 3),
-  parameters = c(1, 2),
-  system= "one.dim",
-  add= FALSE)
-
-grid()
-
-logistic_nullclines <- nullclines(
-  logistic,xlim= c(0, 5),ylim= c(-1, 3),
-  parameters = c(1, 2),
-  system= "one.dim")
-
-logistic_trajectory <- trajectory(
-  logistic,y0= c(-0.5, 0.5, 1.5, 2.5),
-  tlim= c(0, 5),
-  parameters = c(1, 2),
-  system= "one.dim")
-
-```
+<img src="example1_files/figure-html/unnamed-chunk-4-1.png" width="300" />
 
 
 <div class="a">
@@ -266,13 +220,7 @@ $$ \beta y^* \left(1-\frac{y^*}{K}\right)=0 \\ \Longrightarrow y^*=0,\;K $$
 Next, we plot the **phase portrait**:
 
 
-```{r echo=F, out.width=300, message=FALSE}
-logistic_phasePortrait <- phasePortrait(
-  logistic,
-  ylim= c(-0.5, 2.5),
-  parameters = c(1, 2))
-
-```
+<img src="example1_files/figure-html/unnamed-chunk-5-1.png" width="300" />
 
 <div class="a">
 
@@ -302,21 +250,31 @@ So for $\beta=1$ and $K=2$, we have a stable point at $y=2$. So, we can see that
 The following code verifies the above results for the stabilities of the equilibrium points:
 
 
-```{r, echo = T}
+
+```r
 ## equilibrium point y*=0
 logistic_stability_1 <- stability(
   logistic,
   ystar= 0,
   parameters = c(1, 2),
   system= "one.dim")
+```
 
+```
+## discriminant = 1, classification = Unstable
+```
+
+```r
 ## equilibrium point y*=K
 logistic_stability_2 <- stability(
   logistic,
   ystar= 2,
   parameters = c(1, 2),
   system= "one.dim")
+```
 
+```
+## discriminant = -1, classification = Stable
 ```
 
 
