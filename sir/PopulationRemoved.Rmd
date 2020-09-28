@@ -1,0 +1,127 @@
+---
+title: ''
+output:
+  html_document:
+    df_print: paged
+  pdf_document:
+    fig_height: 2
+    fig_width: 3
+---
+
+\definecolor{OliveGreen}{rgb}{0, 0.4, 0.4}
+\definecolor{OliveGreen2}{RGB}{125, 207, 203}
+
+\definecolor{PrettyPink}{rgb}{1, 0, 0.3}
+\definecolor{MorePink}{RGB}{254, 221, 247}
+
+\definecolor{pinkyswear}{RGB}{254, 221, 247}
+
+\definecolor{Orange1}{RGB}{255, 251, 219}
+\definecolor{Orange2}{RGB}{255, 159, 41}
+\definecolor{Orange3}{RGB}{255, 82, 134}
+
+
+\definecolor{PurpleBlue}{rgb}{0.4,0.1,1}
+\definecolor{PurpleBlue2}{RGB}{186, 216, 253}
+
+
+```{r, setup, include=FALSE}
+require(mosaic)   # Load additional packages here 
+knitr::opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+```
+
+
+
+### \textcolor{Orange2}{\large 6.} Suppose we model this disease by an SIR model in the form:
+
+\begin{center}
+\colorbox{Orange1}{\large $\dot S = -\beta I \frac{S}{N}$} \\
+\colorbox{Orange1}{\large $\dot I = \beta I \frac{S}{N}-\alpha I$} \\
+\colorbox{Orange1}{\large $\dot R = \alpha I$}
+\end{center}
+
+
+#### \textcolor{Orange3}{\large a.} Estimate the value of $\alpha$
+
+
+\begin{align*}
+x &= \frac{S}{N} & y&= \frac{I}{N} & \tau &= \alpha t \\
+\frac{dx}{d\tau} & = - \gamma xy & \frac{dy}{d\tau} &=\gamma xy - y & \frac{d\bar x}{d\tau} &= F(\bar x) \\
+&\Rightarrow &\gamma &= \frac{\beta}{\alpha}
+\end{align*}
+
+Along the line $x+y=1$, the inward normal is 
+
+$$\bar n = <-1,-1>$$
+$$\bar n \cdot F(x,y)=y$$
+
+If $\gamma > 1$, an epidemic occurs; i.e. if $S(0)=S_0\approx 1$, then the number of infections increases before decreasing.
+
+
+
+```{r echo=FALSE, fig.align='center', out.width=100}
+library(knitr)
+knitr::include_graphics("images/SIR1.pdf")
+knitr::include_graphics("images/SIR2.pdf")
+
+```
+
+
+
+
+\begin{align*}
+\frac{dI}{dt}=0 &\Rightarrow & \gamma xy -y &=0 \\
+&& x &= \frac{1}{\gamma}
+\end{align*}
+
+
+\begin{align*}
+\frac{dy}{dx} &= \frac{\gamma x-1}{-\gamma x} = \frac{1}{\gamma x}-1 \\
+\int^y_{y_0}dy &= \int^x_{x_0}(\frac{1}{\gamma x}-1)dx \\
+y &= y_0 + \frac{1}{\gamma}\ln{(\frac{x}{x_0})}-x+x_0
+\end{align*}
+
+
+The maximum number of infected at time t is:
+
+
+$$y = y_0 + \frac{1}{\gamma}\ln ({\frac{\gamma}{x_0}}) - x+x_0$$
+
+
+
+Assuming $x_0 \approx 1$ and $y_0 \approx 0$, we have:
+
+
+\begin{align*}
+y_{max} &= 1 - \gamma + \frac{1}{\gamma}\ln({\gamma}) \\
+y(x) &= 1 - \gamma + \frac{1}{\gamma}\ln({x})-x
+\end{align*}
+
+\ 
+
+Computing the number that were infected during the epidemic, we let $z = \frac{R}{N}$
+
+
+\begin{align*}
+\frac{dz}{d\tau} &= y \\
+\frac{dz}{dx} &= -\frac{1}{\gamma x} \\
+\int^z_0 &= dz = \int^x_1 -\frac{1}{\gamma x}dx \\
+z &= -\frac{1}{\gamma}\ln({x}) \\
+x &= e^{-\gamma z} \\
+\\
+\Rightarrow \frac{dz}{d\tau} &= (1-x-z) \\
+&= (1- e^{-\gamma z}-z)
+\end{align*}
+
+
+The total number of infections is at the fixed point $z^*$ when $\bf z^* = 1-e^{-\gamma z^*}$.
+
+
+#### \textcolor{Orange3}{\large b.} Using the relationship between $S$ and $I$ derived in class, estimate the value of $\beta$.
+
+transmission rate, $\beta$
+
+
+#### \textcolor{Orange3}{\large c.} Plot $S$ and $I$ alongside the data. Do they fit?
