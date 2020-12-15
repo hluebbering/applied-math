@@ -3,8 +3,7 @@ title: "Excitatory and Inhibitory Dynamics of Model Neurons"
 subtitle: "A Study By Wilson, H. R. and Cowan, J. D"
 author: "Hannah Luebbering"
 date: December 12, 2020
-output:
-  github_document: default
+output: github_document
 ---
 
 
