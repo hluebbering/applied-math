@@ -16,7 +16,7 @@ nullclines as follows.
 
 <div class="figure" style="text-align: center">
 
-<img src="phaseR_files/figure-gfm/unnamed-chunk-6-1.png" alt="Figure  1: Phase Plane Analysis. Determine the steady-state solution by the nullclines' intersection. Parameters: $c_1=16$, $c_2 = 12$, $c_3=15$, $c_4=3$, $a_e = 1.3$, $\theta_e=4$, $a_i=2$, $\theta_i = 3.7$, $r_e=1$, $r_i=1$." width="400" />
+<img src="README_files/figure-gfm/unnamed-chunk-6-1.png" alt="Figure  1: Phase Plane Analysis. Determine the steady-state solution by the nullclines' intersection. Parameters: $c_1=16$, $c_2 = 12$, $c_3=15$, $c_4=3$, $a_e = 1.3$, $\theta_e=4$, $a_i=2$, $\theta_i = 3.7$, $r_e=1$, $r_i=1$." width="400" />
 
 <p class="caption">
 
@@ -37,7 +37,7 @@ paths in the phase space.
 
 <div class="figure" style="text-align: center">
 
-<img src="phaseR_files/figure-gfm/Final-1.png" alt="Figure  2: Phase Plane Analysis showing limit cycle trajectory in response to constant simulation $P=1.25$. Dashed lines are nullclines. Parameters: $c_1=16$, $c_2 = 12$, $c_3=15$, $c_4=3$, $a_e = 1.3$, $\theta_e=4$, $a_i=2$, $\theta_i = 3.7$, $r_e=1$, $r_i=1$." width="400" />
+<img src="README_files/figure-gfm/Final-1.png" alt="Figure  2: Phase Plane Analysis showing limit cycle trajectory in response to constant simulation $P=1.25$. Dashed lines are nullclines. Parameters: $c_1=16$, $c_2 = 12$, $c_3=15$, $c_4=3$, $a_e = 1.3$, $\theta_e=4$, $a_i=2$, $\theta_i = 3.7$, $r_e=1$, $r_i=1$." width="400" />
 
 <p class="caption">
 
@@ -82,7 +82,7 @@ to exist. Therefore, if we study the limit behavior as a function of
 
 <div class="figure" style="text-align: center">
 
-<img src="phaseR_files/figure-gfm/unnamed-chunk-9-1.png" alt="Figure  3: $I(t)$ and $E(t)$ for limit cycle shown in Fig. 9. The limit cycle depends on the value of $P$, i.e. $Q$ being set equal to zero." width="350" />
+<img src="README_files/figure-gfm/unnamed-chunk-9-1.png" alt="Figure  3: $I(t)$ and $E(t)$ for limit cycle shown in Fig. 9. The limit cycle depends on the value of $P$, i.e. $Q$ being set equal to zero." width="350" />
 
 <p class="caption">
 
