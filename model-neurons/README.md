@@ -3,7 +3,7 @@ Excitatory and Inhibitory Dynamics of Model Neurons
 Hannah Luebbering
 December 12, 2020
 
-#### Limit Cycles
+#### Limit Cycles 
 
 Non-linear systems can exhibit a type of behavior known as a limit
 cycle. If there is only one steady-state solution, and if the
