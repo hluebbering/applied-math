@@ -1,0 +1,7 @@
+name: "Mathematical Modeling"
+output_dir: "docs"
+navbar:
+  title: "Mathematical Modeling"
+  left:
+    - text: "Phase Plane Analysis in R"
+      href: index.html

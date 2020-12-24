@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Phase Plane Analysis in R</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+<link rel="stylesheet" href="static/phase-r.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Mathematical Modeling</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Phase Plane Analysis in R</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Phase Plane Analysis in R</h1>
+
+</div>
+
+
+<p><strong>phaseR</strong>: An R package for phase plane analysis of one and two-dimensional autonomous ODE systems <span class="citation">[1]</span>. The phaseR package uses stability analysis to classify equilibrium points. Specifically, the package uses the Taylor Series method to define equilibrium points for a one dimensional ODE system.</p>
+<div id="fixed-points-and-phase-portraits" class="section level2">
+<h2>Fixed Points and Phase Portraits</h2>
+<div class="a">
+<p><strong>Equilibrium points and stability.</strong> Equilibrium points of an autonomous ODE are defined at <span class="math inline">\(x^*=0\)</span> such that <span class="math inline">\(f(x^*)=0\)</span>. Why do we want to find the equilibrium points? Beginning at a point <span class="math inline">\(x^*\)</span> such that <span class="math inline">\(f(x^*)=0\)</span>, the system, if unperturbed, will remain at <span class="math inline">\(x^*\)</span>. Hence, these points determine the long-term behavior of a differential equation.</p>
+</div>
+<p> </p>
+<p><strong>Phase portrait:</strong> A phase portrait is defined as the geometrical representation of the trajectories of the dynamical system in the phase plane of the system equation. Every set of the initial condition is represented by a different curve or point in the phase plane.</p>
+<div id="linearization" class="section level3">
+<h3>Linearization</h3>
+<p> </p>
+<div class="b1">
+<ol style="list-style-type: lower-roman">
+<li><p>Fixed Points <span class="math inline">\(\mathbf{(x^{\star}, y^{\star})}\)</span>: occur for <span class="math inline">\(\mathrm{\dot x = 0}\)</span> and <span class="math inline">\(\mathrm{\dot y = 0}\)</span></p></li>
+<li><p>Substitute <span class="math inline">\(\mathrm{\dot x}\)</span> and <span class="math inline">\(\mathrm{\dot y}\)</span> into the <strong>Jacobian Matrix</strong></p></li>
+</ol>
+<p><span class="math display">\[
+\Large 
+\mathbf{A} = 
+\begin{bmatrix} 
+\mathrm{\frac{\partial{\dot x}}{\partial x}} &amp; \mathrm{\frac{\partial \dot x}{\partial y}} \\
+\mathrm{\frac{\partial \dot y}{\partial x}} &amp; \mathrm{\frac{\partial \dot y}{\partial y}}
+\end{bmatrix}
+\]</span></p>
+<ol start="3" style="list-style-type: lower-roman">
+<li><p>Evaluate matrix <span class="math inline">\(\mathbf{A}\)</span> at any fixed point <span class="math inline">\(\mathbf(x^{\star}, y^{\star})\)</span></p></li>
+<li><p>The Eigen value <span class="math inline">\(\mathbf{\lambda}\)</span> for the fixed point is calculated with the <strong>characteristic equation</strong> <span class="math inline">\(\mathrm{det}\mathbf{(A-\lambda I)}=0\)</span>.</p></li>
+</ol>
+<p><span class="math display">\[
+\begin{align}
+\large \mathbf{A}_{\small\mathrm{(x^{\star}, y^{\star})}}
+\mathbf{-}
+\begin{bmatrix}
+\lambda &amp; 0 \\
+0 &amp; \lambda
+\end{bmatrix}
+&amp;= 0
+&amp; \\
+\begin{bmatrix}
+a_1 - \lambda &amp; a_2 \\
+a_3 &amp; a_4 -\lambda
+\end{bmatrix}
+&amp;= 0
+&amp; \\
+(a_1 - \lambda) \times (a_4 -\lambda) - (a_2) \times (a_3) &amp;= 0
+\end{align}
+\]</span></p>
+<ol start="22" style="list-style-type: lower-alpha">
+<li>The <strong>roots</strong> of the above equation can be calculated as</li>
+</ol>
+<p><span class="math display">\[\lambda = \mathrm{\frac{-b \pm \sqrt{b^2 - 4ac}}{2a}}\]</span></p>
+<ol start="6" style="list-style-type: lower-roman">
+<li>Sketch the <strong>Phase Portrait</strong></li>
+</ol>
+</div>
+<p> </p>
+</div>
+<div id="types-of-fixed-points" class="section level3">
+<h3>Types of Fixed Points</h3>
+<div class="b1">
+<p><span class="lp3">a.</span> <strong>Stable Node</strong></p>
+<ul>
+<li>The fixed point will be a stable node if both eigen values <span class="math inline">\(\lambda_{1,2}\)</span> are real numbers with the same sign: <span class="math inline">\(\lambda_{1,2} &gt; 0\)</span> or <span class="math inline">\(\lambda_{1,2} &lt; 0\)</span>.</li>
+</ul>
+<p><span class="lp4">b.</span> <strong>Saddle Node</strong></p>
+<ul>
+<li>The fixed point will be a saddle point if one eigen value <span class="math inline">\(\lambda_1\)</span> is greater than 0, and the other eigen value <span class="math inline">\(\lambda_2\)</span> is less than 0.</li>
+</ul>
+<p><span class="lp5">c.</span> <strong>Center</strong></p>
+<ul>
+<li>The origin of the system will form a center if both eigen values <span class="math inline">\(\lambda_{1,2}\)</span> are pure imaginary.</li>
+<li>The fixed point will be an outgoing spirals if both eigen values <span class="math inline">\(\lambda_{1,2}\)</span> are complex with positive real parts.</li>
+<li>The fixed point will be oscillating in nature if the eigen values <span class="math inline">\(\lambda_i\)</span> change from real to imaginary.</li>
+</ul>
+<p><span class="lp6">d.</span> <strong>Isolated</strong></p>
+<ul>
+<li>The origin will be an isolated fixed point if the determinant <span class="math inline">\(\nabla\)</span> comes out to be 0.</li>
+</ul>
+<p><span class="lp7">e.</span> <strong>Unstable Star</strong></p>
+<ul>
+<li>The fixed point will be a unstable star if there is only one eigen value <span class="math inline">\(\lambda_1\)</span> for the system.</li>
+</ul>
+</div>
+<p> </p>
+<hr />
+</div>
+<div id="equilibrium-points" class="section level3">
+<h3>Equilibrium points</h3>
+<p> </p>
+<p><strong>Example.</strong> Find the equilibrium points to the following ODE:</p>
+<p><span class="math display">\[\frac{dy}{dt}=4-y^2\]</span></p>
+<div class="b1">
+<p><span class="math display">\[ 
+\begin{align}
+\frac{dy}{dt} &amp;= 4-y^2 = 0 \\
+0 &amp; = (2-y)(2+y) \\
+\Rightarrow&amp; y = -2,2
+\end{align} 
+\]</span></p>
+</div>
+<p> </p>
+</div>
+<div id="stability-of-the-equilibrium-points" class="section level3">
+<h3>Stability of the equilibrium points</h3>
+<p><strong>Definition.</strong> if for every <span class="math inline">\(\epsilon&gt;0\)</span>, there exists <span class="math inline">\(\delta&gt;0\)</span> such that whenever <span class="math inline">\(|y(0)-y_*|&lt;\delta\)</span> then <span class="math inline">\(|y(t)-y_*|&lt;\epsilon\)</span> for all <span class="math inline">\(t\)</span>. Hence, a fixed point is stable if a system placed a small distance away from the fixed point continues to remain close to the fixed point. And a fixed point is unstable if a system placed a small perturbation away from the fixed point causes the solution to diverge.</p>
+<p>There are 2 methods for determining the stability of a fixed point: Phase Portrait Analysis or the Taylor Series Expansion.</p>
+<p> </p>
+<div id="phase-portrait-analysis" class="section level4">
+<h4>Phase Portrait Analysis</h4>
+<p><strong>Graphical Interpretation.</strong> A phase portrait plots the derivative <span class="math inline">\(\dot x\)</span> against the dependent variable <span class="math inline">\(x\)</span>. We can find the <strong>equilibrium points</strong> at locations where <span class="math inline">\(f\)</span> crosses the <span class="math inline">\(\mathcal x-\text{axis}\)</span>.</p>
+<div class="b1">
+<p>We can represent the flow of <span class="math inline">\(f\)</span> in the phase portrait by placing arrows along the dependent variable’s axis, indicating whether <span class="math inline">\(f\)</span> would be increasing or decreasing. Points where arrows on both side of the equilibrium point towards each other <span class="math inline">\(\rightarrow\;\; \leftarrow\)</span> denotes stability. And points where arrows on both side of the equilibrium point away from each other <span class="math inline">\(\leftarrow\;\; \rightarrow\)</span> denotes instability.</p>
+</div>
+<p> </p>
+<p>In the following, we plot the phase portrait for <span class="math inline">\(\frac{dy}{dt}=4-y^2\)</span>. The trajectories plotted shows that solutions converge towards <span class="math inline">\(y=2\)</span>, but away from <span class="math inline">\(y=-2\)</span>. Hence, the equilibrium point <span class="math inline">\(y^*=2\)</span> is stable and the equilibrium point <span class="math inline">\(y^*=-2\)</span> is unstable.</p>
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="400" style="display: block; margin: auto;" /></p>
+<p> </p>
+<p><strong>Uniqueness Theorem.</strong> The above method assumes <span class="math inline">\(f\)</span> to be continuous and differentiable. Hence, these conditions guarantee only unique solutions to the autonomous differential equation. Therefore, the solution curves cannot touch, expect when they converge at equilibrium points.</p>
+<p> </p>
+</div>
+<div id="taylor-series-expansion" class="section level4">
+<h4>Taylor Series Expansion</h4>
+<p>The second method for performing stability analyses utilizes the Taylor Series expansion of <span class="math inline">\(f\)</span>.</p>
+<p><strong>Assumptions:</strong> Suppose we are a small distance <span class="math inline">\(\delta(0)\)</span> away from fixed point <span class="math inline">\(y_*\)</span>. Then <span class="math inline">\(y(0)=y_*+\delta(0)\)</span> and <span class="math inline">\(y(t)=y_*+\delta(t)\)</span>. So, the Taylor Series of <span class="math inline">\(f\)</span> can be written as the following, such that the <span class="math inline">\(y^*\)</span> input represents the point where we perform stability analysis:</p>
+<p><span class="math display">\[f(y^*+\delta)=f(y^*)+\delta\frac{\partial f}{\partial y}(y^*)+o(\delta)\]</span></p>
+<p> </p>
+<hr />
+</div>
+</div>
+</div>
+<div id="example-1.-one-dimesnional-ode" class="section level2">
+<h2>Example 1. One-Dimesnional ODE</h2>
+<div class="a">
+<p>Consider the one-dimensional autonomous ODE: <span class="math display">\[\frac{dy}{dt}=y(1-y)(2-y)\]</span></p>
+</div>
+<div id="flow-field" class="section level3">
+<h3>Flow Field</h3>
+<p>The following plots the flow field and various trajectories, adding horizontal lines at equilibrium points:</p>
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" width="350" style="display: block; margin: auto;" /></p>
+</div>
+<div id="fixed-points" class="section level3">
+<h3>Fixed Points</h3>
+<p>The horizontal lines on the graph indicate that three equilibrium points have been identified at <span class="math inline">\(y^*=0,1,2\)</span>. If we set <span class="math inline">\(\hat y=0,\)</span> we can analytically solve for the three equilibrium points:</p>
+<p><span class="math display">\[
+\begin{align}
+y^* (1-y^* )(2-y^* ) &amp;= 0 \\
+y^* &amp;= 0, 1, 2
+\end{align}
+\]</span></p>
+</div>
+<div id="stability-of-fixed-points" class="section level3">
+<h3>Stability of Fixed Points</h3>
+<p><strong>Method 1.</strong> Phase Portrait</p>
+<div class="b1">
+<p>Plotting the <strong>phase portrait</strong>, we find that <span class="math inline">\(y^*=0\)</span> and <span class="math inline">\(y^*=2\)</span> are unstable; and <span class="math inline">\(y^*=1\)</span> is stable</p>
+</div>
+<p> </p>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="400" style="display: block; margin: auto;" /></p>
+<p> </p>
+<p><strong>Method 2.</strong> Taylor Series Approach</p>
+<div class="b1">
+<p><span class="math display">\[
+\begin{align}
+\frac{dy}{dt}&amp;=y (1-y )(2-y )  \\
+&amp;= y^3-4y^2+2y
+\end{align}
+\]</span></p>
+<p>Using the Taylor Series approach we have:</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{d}{dy}\left.\left(\frac{dy}{dt}\right)\right|_{y=y^*} &amp;= 3y^{*^2} - 6y^* + 2 = \begin{cases} 2, &amp; \ y^*=0,\\ -1 ,&amp; \ y^*=1,\\ 2, &amp; \ y^*=2.  \end{cases} 
+\end{align}
+\]</span></p>
+</div>
+<p> </p>
+<p>We draw the same conclusion as from the phase portrait. We can confirm the Taylor analysis using <code>stability()</code> to check the stability of each equilibrium point:</p>
+<p>Hence we reach conclusion as above that <span class="math inline">\(y^*=2\)</span> is stable, and <span class="math inline">\(y^*=-2\)</span> is unstable. Therefore, if <span class="math inline">\(y(0)&gt;2\)</span> or <span class="math inline">\(0&lt;y(0)&lt;2\)</span>, then the solution will eventually approach <span class="math inline">\(y=2\)</span>. However, if <span class="math inline">\(y(0)&lt;0\)</span>, <span class="math inline">\(y\rightarrow-\infty\)</span> as <span class="math inline">\(t\rightarrow\infty\)</span>.</p>
+<p> </p>
+<hr />
+</div>
+</div>
+<div id="example-2.-two-dimensional-ode" class="section level2">
+<h2>Example 2. Two-Dimensional ODE</h2>
+<p>Consider the Lotka-Volterra model, a simple two species competition model, used in ecology, given by the following:</p>
+<p><span class="math display">\[\frac{dx}{dt} = x-xy, \ \frac{dy}{dt} = xy-y\]</span></p>
+<p><span class="sp3">a.</span> Plot the velocity field with several trajectories:</p>
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" width="400" style="display: block; margin: auto;" /></p>
+<div id="nullclines" class="section level3">
+<h3>Nullclines</h3>
+<p>Here, <span class="math inline">\(x\)</span>-nullclines are defined where <span class="math inline">\(f(x,y)=0\)</span>, while the <span class="math inline">\(y\)</span>-nullclines are defined where <span class="math inline">\(g(x,y)=0\)</span>. Thus, the <span class="math inline">\(x\)</span>- and <span class="math inline">\(y\)</span>-nullclines define the locations where <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> do not change with time <span class="math inline">\(t\)</span>. When plotting a vector field, it is a good idea to plot the nullclines first, because the line segments/vectors along the nullclines move parallel to the <span class="math inline">\(x\)</span>- and <span class="math inline">\(y\)</span>-axes.</p>
+<p><span class="sp4">b.</span> Calculate and Sketch the Nullclines:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbf{\dot x = 0} \\ 
+&amp; \mathrm{x-xy = 0} \ \Longrightarrow  \ x(1-y) = 0 \\
+&amp; \Rightarrow  \mathbf{x=0} \text{ or } \mathbf{y=1},\\
+\mathbf{\dot y = 0}\\ 
+&amp; \mathrm{xy-y = 0} \Rightarrow y(x-1) = 0 \\
+&amp; \Rightarrow \mathbf{x=1} \text{ or } \mathbf{y=0}
+\end{align}
+\]</span></p>
+<p>Hence, the fixed points come out to be <span class="math inline">\(\mathrm{(0, 0)}\)</span> and <span class="math inline">\(\mathrm{(1, 1)}\)</span>.</p>
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" width="600" style="display: block; margin: auto;" /></p>
+</div>
+<div id="equilibrium-points-and-stability" class="section level3">
+<h3>Equilibrium points and stability</h3>
+<p>Equilibrium points defined as the Fixed points are at <span class="math inline">\((x_*,y_*)\)</span> where:</p>
+<p><span class="math display">\[ f(x^*,y^*)=g(x^*,y^*)=0 \]</span></p>
+<p><span class="sp5">c.</span> Taking partial derivatives we compute the Jacobian at any equilibrium point <span class="math inline">\((x^∗,y^∗)\)</span>:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathbf{A} &amp;= 
+\begin{bmatrix} 
+\frac{\partial (x-xy)}{\partial x} &amp;  \frac{\partial (x-xy)}{\partial y} \\
+\frac{\partial (xy-y)}{\partial x} &amp; \frac{\partial (xy-y)}{\partial y} 
+\end{bmatrix} \\
+\\
+\mathbf{A}_{(x,y)} &amp;=
+\begin{pmatrix} 
+\mathrm{1-y} &amp;  \mathrm{-x} \\
+\mathrm{y} &amp; \mathrm{x-1}
+\end{pmatrix}
+\end{align}
+\]</span></p>
+<p>For the fixed point <span class="math inline">\(\mathbf{(0,0)}\)</span></p>
+<p><span class="math display">\[
+\mathbf{A}_{(0,0)} =
+\left.\begin{pmatrix} 
+\mathrm{1} &amp;  \mathrm{0} \\
+\mathrm{0} &amp; \mathrm{-1}
+\end{pmatrix}\right|_{(0,0)}
+\]</span></p>
+<p>So <span class="math inline">\(\text{tr}(J)=T=0\)</span> and <span class="math inline">\(\text{det}(J)=\Delta=-1\)</span>; which from our table above makes <span class="math inline">\((0,0)\)</span> a saddle point.</p>
+<p>For the fixed point <span class="math inline">\(\mathbf{(1,1)}\)</span></p>
+<p><span class="math display">\[
+\mathbf{A}_{(1,1)} =
+\left. \begin{pmatrix} 
+\mathrm{0} &amp;  \mathrm{-1} \\
+\mathrm{1} &amp; \mathrm{0}
+\end{pmatrix}\right|_{(1,1)}
+\]</span></p>
+<p>Therefore, <span class="math inline">\(\text{tr}(J)=T=0\)</span> and <span class="math inline">\(\text{det}(J)=\Delta=1\)</span>; which from our table above makes <span class="math inline">\((1,1)\)</span> a centre.</p>
+<p>If we look back at our earlier plot, we can observe trajectories diverging away from <span class="math inline">\((0,0)\)</span>, but traversing around <span class="math inline">\((1,1)\)</span>.</p>
+<p> </p>
+<p><span class="sp6">d.</span> Plot the Oscillating Nature</p>
+<p>Here we plot <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> trajectories against <span class="math inline">\(t\)</span>. For the case of <span class="math inline">\((x_0,y_0)=(3,4)\)</span> in this example system this results in the following plot which we can view the oscillating nature of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>:</p>
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" width="400" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+</div>
+<div id="example-3.-wilson-cowan-model" class="section level2">
+<h2>Example 3. Wilson-Cowan Model</h2>
+<p>The Wilson-Cowan System is a coupled, nonlinear, differential equation for the excitatory and inhibitory populations’ firing rates of neurons:</p>
+<p><span class="math display">\[\tau_e \frac{dE}{dt} = -E + (k_e - r_e E) \, S_e(c_1 E - c_2 I + P)\]</span></p>
+<p><span class="math display">\[\tau_i \frac{dI}{dt} = -I + (k_i - r_i I) \, S_i(c_3 E - c_4 I + Q),\]</span></p>
+<p>In our numerical search of the steady-state points, we study the cases where the derivatives of <span class="math inline">\(E\)</span> and <span class="math inline">\(I\)</span> are zero. Since the system is highly nonlinear, we have to do it numerically. First, we draw the flow field and then draw the nullclines of the system. The <span class="math inline">\(x\)</span>-nullclines are defined by <span class="math inline">\(f(x,y)=0\)</span>, and the <span class="math inline">\(y\)</span>-nullclines are defined by <span class="math inline">\(g(x, y)=0\)</span>. These are the locations where <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> do not change with time.</p>
+<p><strong>Limit Cycles.</strong> Non-linear systems can exhibit a type of behavior known as a limit cycle. If there is only one steady-state solution, and if the steady-state solution is unstable, a limit cycle will occur. In the following, we define the parameters for satisfying conditions 18 and 20 as <span class="math inline">\(c_1=16\)</span>, <span class="math inline">\(c_2 = 12\)</span>, <span class="math inline">\(c_3=15\)</span>, <span class="math inline">\(c_4=3\)</span>, <span class="math inline">\(a_e = 1.3\)</span>, <span class="math inline">\(\theta_e=4\)</span>, <span class="math inline">\(a_i=2\)</span>, <span class="math inline">\(\theta_i = 3.7\)</span>, <span class="math inline">\(r_e=1\)</span> and <span class="math inline">\(r_i=1\)</span>. We can determine a steady-state solution by the intersection of the nullclines as follows.</p>
+<div class="figure" style="text-align: center">
+<img src="index_files/figure-html/unnamed-chunk-12-1.png" alt="Figure  1: Phase Plane Analysis. Determine the steady-state solution by the nullclines' intersection. Parameters: $c_1=16$, $c_2 = 12$, $c_3=15$, $c_4=3$, $a_e = 1.3$, $\theta_e=4$, $a_i=2$, $\theta_i = 3.7$, $r_e=1$, $r_i=1$." width="400" />
+<p class="caption">
+Figure 1: Phase Plane Analysis. Determine the steady-state solution by the nullclines’ intersection. Parameters: <span class="math inline">\(c_1=16\)</span>, <span class="math inline">\(c_2 = 12\)</span>, <span class="math inline">\(c_3=15\)</span>, <span class="math inline">\(c_4=3\)</span>, <span class="math inline">\(a_e = 1.3\)</span>, <span class="math inline">\(\theta_e=4\)</span>, <span class="math inline">\(a_i=2\)</span>, <span class="math inline">\(\theta_i = 3.7\)</span>, <span class="math inline">\(r_e=1\)</span>, <span class="math inline">\(r_i=1\)</span>.
+</p>
+</div>
+<p>In the phase plane, the limit cycle is an isolated closed orbit, where “closed” means the periodicity of movement, and “isolated” means the limit of motion, where nearby trajectories converge or deviate. We can alter our initial values of <span class="math inline">\(E_0\)</span> and <span class="math inline">\(I_0\)</span> to obtain different paths in the phase space.</p>
+<div class="figure" style="text-align: center">
+<img src="index_files/figure-html/Final-1.png" alt="Figure  2: Phase Plane Analysis showing limit cycle trajectory in response to constant simulation $P=1.25$. Dashed lines are nullclines. Parameters: $c_1=16$, $c_2 = 12$, $c_3=15$, $c_4=3$, $a_e = 1.3$, $\theta_e=4$, $a_i=2$, $\theta_i = 3.7$, $r_e=1$, $r_i=1$." width="400" />
+<p class="caption">
+Figure 2: Phase Plane Analysis showing limit cycle trajectory in response to constant simulation <span class="math inline">\(P=1.25\)</span>. Dashed lines are nullclines. Parameters: <span class="math inline">\(c_1=16\)</span>, <span class="math inline">\(c_2 = 12\)</span>, <span class="math inline">\(c_3=15\)</span>, <span class="math inline">\(c_4=3\)</span>, <span class="math inline">\(a_e = 1.3\)</span>, <span class="math inline">\(\theta_e=4\)</span>, <span class="math inline">\(a_i=2\)</span>, <span class="math inline">\(\theta_i = 3.7\)</span>, <span class="math inline">\(r_e=1\)</span>, <span class="math inline">\(r_i=1\)</span>.
+</p>
+</div>
+<p>The phase plane analysis illustrates a bounded steady-state solution that is classified as unstable; this is a typical feature of a limit cycle. The solution’s oscillating behavior, shown in Figure 10, follows typical limit cycle behavior:</p>
+<ul>
+<li>Trajectories near the equilibrium point are pushed further away from the equilibrium.</li>
+<li>Trajectories far from the equilibrium point move closer toward the equilibrium.</li>
+</ul>
+<p>We established the resting state <span class="math inline">\(E=0, I=0\)</span> to be stable in the absence of an outside force. Therefore, the neural population only exhibits limit cycle activity in response to a constant external input (P or Q). All in all, the premise of Theorem 3 is that there is only one steady-state, and it must be near the inflection point for a limit cycle to exist. Therefore, if we study the limit behavior as a function of <span class="math inline">\(P\)</span>, where <span class="math inline">\(Q=0\)</span>, then it follows that:</p>
+<ul>
+<li>There is a threshold value of P, and below this threshold, the limit cycle activity cannot occur.</li>
+<li>There is a higher value of P, and above this bound, the system’s limit cycle activity will cease.</li>
+<li>Within the range defined above, both the limit cycle frequency and the average value of <span class="math inline">\(E(t)\)</span> increases monotonically with respect to <span class="math inline">\(P\)</span>.</li>
+</ul>
+<p> </p>
+<div class="figure" style="text-align: center">
+<img src="index_files/figure-html/unnamed-chunk-15-1.png" alt="Figure  3: $I(t)$ and $E(t)$ for limit cycle shown above. The limit cycle depends on the value of $P$, i.e. $Q$ being set equal to zero." width="350" />
+<p class="caption">
+Figure 3: <span class="math inline">\(I(t)\)</span> and <span class="math inline">\(E(t)\)</span> for limit cycle shown above. The limit cycle depends on the value of <span class="math inline">\(P\)</span>, i.e. <span class="math inline">\(Q\)</span> being set equal to zero.
+</p>
+</div>
+<hr />
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<div class="a">
+<p>The above demonstrates the components necessary to perform qualitative analysis on a one-dimensional autonomous ODE:</p>
+<ul>
+<li>plot the flow field</li>
+<li>plot several trajectories one the flow field</li>
+<li>identify the equilibrium points</li>
+<li>choose a method to determine stability of equilibrium points</li>
+</ul>
+</div>
+<hr />
+<div id="references" class="section level3 unnumbered">
+<h3 class="unnumbered">References</h3>
+<div id="refs" class="references">
+<div id="ref-grayling2014">
+<p>[1] <span class="smallcaps">Grayling</span>, M. J. (2014). phaseR: An R Package for Phase Plane Analysis of Autonomous ODE Systems. <em>The R Journal</em> <strong>6</strong> 43–51.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

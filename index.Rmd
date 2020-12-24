@@ -28,6 +28,16 @@ fig_nums <- captioner(prefix = "Figure")
 
 ## Fixed Points and Phase Portraits
 
+
+
+<div class="a">
+
+**Equilibrium points and stability.** Equilibrium points of an autonomous ODE are defined at $x^*=0$ such that $f(x^*)=0$. Why do we want to find the equilibrium points? Beginning at a point $x^*$ such that $f(x^*)=0$, the system, if unperturbed, will remain at $x^*$. Hence, these points determine the long-term behavior of a differential equation.
+
+</div>
+
+\ 
+
 **Phase portrait:** A phase portrait is defined as the geometrical representation of the trajectories of the dynamical system in the phase plane of the system equation. Every set of the initial condition is represented by a different curve or point in the phase plane.
 
 
@@ -132,13 +142,9 @@ vi. Sketch the **Phase Portrait**
 -----------------------------------
 
 
-## Equilibrium points and stability
+### Equilibrium points
 
-<div class="a">
 
-**Equilibrium points and stability.** Equilibrium points of an autonomous ODE are defined at $x^*=0$ such that $f(x^*)=0$. Why do we want to find the equilibrium points? Beginning at a point $x^*$ such that $f(x^*)=0$, the system, if unperturbed, will remain at $x^*$. Hence, these points determine the long-term behavior of a differential equation.
-
-</div>
 
 
 \ 
@@ -659,7 +665,7 @@ example4_solution <- numericalSolution(WilsonCowan2,
 
 ---------------------------
 
-### Summary
+## Summary
 
 
 <div class="a">
