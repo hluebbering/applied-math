@@ -195,8 +195,12 @@ We can represent the flow of $f$ in the phase portrait by placing arrows along t
 In the following, we plot the phase portrait for $\frac{dy}{dt}=4-y^2$. The trajectories plotted shows that solutions converge towards $y=2$, but away from $y=-2$. Hence, the equilibrium point $y^*=2$ is stable and the equilibrium point $y^*=-2$ is unstable. 
 
 
+```{r}
+body_cap <- fig_nums(name = "phase", caption = "Phase Portrait for $\\frac{dy}{dt}=4-y^2$. The trajectories plotted shows that solutions converge towards $y=2$, but away from $y=-2$.")
+```
 
-```{r echo = F, fig.dim = c(7, 5), message=FALSE}
+
+```{r echo = F, fig.dim = c(7, 5), message=FALSE, fig.cap=body_cap}
 example1_phasePortrait  <- phasePortrait(
   example1, ylim = c(-5, 5))
 ```
@@ -244,7 +248,11 @@ $$\frac{dy}{dt}=y(1-y)(2-y)$$
 The following plots the flow field and various trajectories, adding horizontal lines at equilibrium points:
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, out.width=350}
+```{r}
+body_cap2 <- fig_nums(name = "phase2", caption = "The flow field and various trajectories, adding horizontal lines at equilibrium points.")
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width=350, fig.cap=body_cap2}
 example2_flowField  <- flowField(example2,
                                  xlim = c(0, 2),
                                  ylim = c(-1, 3),
@@ -293,7 +301,11 @@ Plotting the **phase portrait**, we find that $y^*=0$ and $y^*=2$ are unstable; 
 
 \ 
 
-```{r, echo = F, message=FALSE, warning=FALSE, fig.dim = c(7, 5)}
+```{r}
+body_cap3 <- fig_nums(name = "phase3", caption = "The flow field and various trajectories, adding horizontal lines at equilibrium points.")
+```
+
+```{r, echo = F, message=FALSE, warning=FALSE, fig.dim = c(7, 5), fig.cap=body_cap3}
 example2_phasePortrait <- phasePortrait(
   example2, ylim = c(-0.5, 2.5))
 ```
@@ -329,6 +341,7 @@ $$
 We draw the same conclusion as from the phase portrait. We can confirm the Taylor analysis using `stability()` to check the stability of each equilibrium point:
 
 
+
 ```{r, echo = F}
 example2_stability_1 <- stability(
   example2, ystar = 0, system = "one.dim")
@@ -360,9 +373,15 @@ $$\frac{dx}{dt} = x-xy, \ \frac{dy}{dt} = xy-y$$
 
 
 
+
 <span class="sp3">a.</span> Plot the velocity field with several trajectories: 
 
-```{r, echo = F, fig.dim = c(7, 5)}
+```{r}
+body_cap4 <- fig_nums(name = "phase4", caption = "Plot of the velocity field with several trajectories for $\\frac{dx}{dt} = x-xy, \ \\frac{dy}{dt} = xy-y$.")
+```
+
+
+```{r, echo = F, fig.dim = c(7, 5), fig.cap=body_cap4}
 lotkaVolterra_flowField    <- flowField(lotkaVolterra,
                                         xlim       = c(0, 5), 
                                         ylim       = c(0, 5),
@@ -400,8 +419,12 @@ $$
 Hence, the fixed points come out to be $\mathrm{(0, 0)}$ and $\mathrm{(1, 1)}$.
 
 
+```{r}
+body_cap5 <- fig_nums(name = "phase5", caption = "Sketch of the nullclines for the system of equations $\\frac{dx}{dt} = x-xy, \ \\frac{dy}{dt} = xy-y$.")
+```
 
-```{r, echo = F,out.width=600}
+
+```{r, echo = F,out.width=600, fig.cap=body_cap5}
 lotkaVolterra_flowField    <- flowField(lotkaVolterra,
                                         xlim       = c(-1.5,1.5), 
                                         ylim       = c(-1.5,1.5),
@@ -481,7 +504,12 @@ If we look back at our earlier plot, we can observe trajectories diverging away 
 
 Here we plot $x$ and $y$ trajectories against $t$. For the case of $(x_0,y_0)=(3,4)$ in this example system this results in the following plot which we can view the oscillating nature of $x$ and $y$:
 
-```{r, echo = F, fig.dim = c(7, 5)}
+```{r}
+body_cap6 <- fig_nums(name = "phase6", caption = "Plot $x$ and $y$ trajectories against $t$. In this example, we can view the oscillating nature of $x$ and $y$.")
+```
+
+
+```{r, echo = F, fig.dim = c(7, 5), fig.cap=body_cap6}
 lotkaVolterra_numericalSolution <- numericalSolution(lotkaVolterra,
                                                      y0 = c(3, 4),
                                                      tlim = c(0, 50),
@@ -679,6 +707,13 @@ The above demonstrates the components necessary to perform qualitative analysis 
 
 </div>
 
+
+---------------------------
+
+## Code Appendix
+
+```{r ref.label = knitr::all_labels(), echo = TRUE, eval=FALSE}
+```
 
 ---------------------------
 
