@@ -1,29 +1,230 @@
 ---
+title: "Phase Plane Analysis in R"
 output: 
   html_document: 
     toc: yes
     toc_float: yes
+    self_contained: no
     css: static/phase-r.css
-bibliography: static/citation/phase-r-citation.bib
+bibliography: ./static/citation/phase-r-citation.bib
+csl: ./static/citation/institute-of-mathematical-statistics.csl 
 nocite: '@*'
 ---
 
-## Phase Plane Analysis in R
+```{r include=FALSE}
+library(knitr)
+library(phaseR)
+library(deSolve)
+library(graphics)
+library(captioner)
+library(latex2exp)
+knitr::opts_chunk$set(echo = FALSE, out.width = 400, fig.align = "center", message = FALSE)
+fig_nums <- captioner(prefix = "Figure")
+```
+
+
+**phaseR**: An R package for phase plane analysis of one and two-dimensional autonomous ODE systems [@grayling2014]. The phaseR package uses stability analysis to classify equilibrium points. Specifically, the package uses the Taylor Series method to define equilibrium points for a one dimensional ODE system.
+
+
+## Fixed Points and Phase Portraits
+
+**Phase portrait:** A phase portrait is defined as the geometrical representation of the trajectories of the dynamical system in the phase plane of the system equation. Every set of the initial condition is represented by a different curve or point in the phase plane.
+
+
+### Linearization
+
+\ 
+
+<div class="b1">
+
+i.  Fixed Points $\mathbf{(x^{\star}, y^{\star})}$: occur for $\mathrm{\dot x = 0}$ and $\mathrm{\dot y = 0}$
+
+ii. Substitute $\mathrm{\dot x}$ and $\mathrm{\dot y}$ into the **Jacobian Matrix** 
+
+$$
+\Large 
+\mathbf{A} = 
+\begin{bmatrix} 
+\mathrm{\frac{\partial{\dot x}}{\partial x}} & \mathrm{\frac{\partial \dot x}{\partial y}} \\
+\mathrm{\frac{\partial \dot y}{\partial x}} & \mathrm{\frac{\partial \dot y}{\partial y}}
+\end{bmatrix}
+$$
+
+
+iii. Evaluate matrix $\mathbf{A}$ at any fixed point $\mathbf(x^{\star}, y^{\star})$
+
+
+iv. The Eigen value $\mathbf{\lambda}$ for the fixed point is calculated with the **characteristic equation** $\mathrm{det}\mathbf{(A-\lambda I)}=0$.
+
+$$
+\begin{align}
+\large \mathbf{A}_{\small\mathrm{(x^{\star}, y^{\star})}}
+\mathbf{-}
+\begin{bmatrix}
+\lambda & 0 \\
+0 & \lambda
+\end{bmatrix}
+&= 0
+& \\
+\begin{bmatrix}
+a_1 - \lambda & a_2 \\
+a_3 & a_4 -\lambda
+\end{bmatrix}
+&= 0
+& \\
+(a_1 - \lambda) \times (a_4 -\lambda) - (a_2) \times (a_3) &= 0
+\end{align}
+$$
+
+v. The **roots** of the above equation can be calculated as 
+
+$$\lambda = \mathrm{\frac{-b \pm \sqrt{b^2 - 4ac}}{2a}}$$
+
+vi. Sketch the **Phase Portrait**
+
+
+</div>
+
+\ 
+
+
+### Types of Fixed Points
 
 
 
-`phaseR`: An R package for phase plane analysis of one and two-dimensional autonomous ODE systems [@grayling2014].
+<div class="b1">
+
+<span class="lp3">a.</span> **Stable Node**
+
+- The fixed point will be a stable node if both eigen values $\lambda_{1,2}$ are real numbers with the same sign: $\lambda_{1,2} > 0$ or $\lambda_{1,2} < 0$. 
 
 
 
-------------------------------
+<span class="lp4">b.</span> **Saddle Node**
+
+- The fixed point  will be a saddle point if one eigen value $\lambda_1$ is greater than 0, and the other eigen value $\lambda_2$ is less than 0. 
+
+
+<span class="lp5">c.</span> **Center**
+
+- The origin of the system will form a center if both eigen values $\lambda_{1,2}$ are pure imaginary.
+- The fixed point will be an outgoing spirals if both eigen values $\lambda_{1,2}$ are complex with positive real parts.
+- The fixed point will be oscillating in nature if the eigen values $\lambda_i$ change from real to imaginary.
 
 
 
-## Example 1. one-dimesnional ODE
+
+<span class="lp6">d.</span> **Isolated**
+
+- The origin will be an isolated fixed point if the determinant $\nabla$ comes out to be 0. 
+
+
+<span class="lp7">e.</span> **Unstable Star**
+
+
+- The fixed point will be a unstable star if there is only one eigen value $\lambda_1$ for the system. 
+
+</div>
+
+\ 
+
+
+
+
+
+## Equilibrium points and stability
+
+<div class="a">
+
+**Equilibrium points and stability.** Equilibrium points of an autonomous ODE are defined at $x^*=0$ such that $f(x^*)=0$. Why do we want to find the equilibrium points? Beginning at a point $x^*$ such that $f(x^*)=0$, the system, if unperturbed, will remain at $x^*$. Hence, these points determine the long-term behavior of a differential equation.
+
+</div>
+
+
+\ 
+
+**Example.** Find the equilibrium points to the following ODE:
+
+$$\frac{dy}{dt}=4-y^2$$
+
+<div class="b1">
+
+$$ 
+\begin{align}
+\frac{dy}{dt} &= 4-y^2 = 0 \\
+0 & = (2-y)(2+y) \\
+\Rightarrow& y = -2,2
+\end{align} 
+$$
+
+</div>
+
+\ 
+
+
+### Stability of the equilibrium points
+
+
+**Definition.** if for every $\epsilon>0$, there exists $\delta>0$ such that whenever $|y(0)-y_*|<\delta$ then $|y(t)-y_*|<\epsilon$ for all $t$. Hence, a fixed point is stable if a system placed a small distance away from the fixed point continues to remain close to the fixed point. And a fixed point is unstable if a system placed a small perturbation away from the fixed point causes the solution to diverge. 
+
+There are 2 methods for determining the stability of a fixed point: Phase Portrait Analysis or the Taylor Series Expansion.
+
+\ 
+
+#### Phase Portrait Analysis
+
+
+**Graphical Interpretation.** A phase portrait plots the derivative $\dot x$ against the dependent variable $x$. We can find the **equilibrium points** at locations where $f$ crosses the $\mathcal x-\text{axis}$. 
+
+
+<div class="b1">
+
+We can represent the flow of $f$ in the phase portrait by placing arrows along the dependent variable's axis, indicating whether $f$ would be increasing or decreasing. Points where arrows on both side of the equilibrium point towards each other $\rightarrow\;\; \leftarrow$ denotes stability. And points where arrows on both side of the equilibrium point away from each other $\leftarrow\;\; \rightarrow$ denotes instability.
+
+</div>
+
+\ 
+
+
+In the following, we plot the phase portrait for $\frac{dy}{dt}=4-y^2$. The trajectories plotted shows that solutions converge towards $y=2$, but away from $y=-2$. Hence, the equilibrium point $y^*=2$ is stable and the equilibrium point $y^*=-2$ is unstable. 
+
+
+
+```{r echo = F, fig.dim = c(7, 5), message=FALSE}
+example1_phasePortrait  <- phasePortrait(
+  example1, ylim = c(-5, 5))
+```
+
+\ 
+
+
+
+**Uniqueness Theorem.** The above method assumes $f$ to be continuous and differentiable. Hence, these conditions guarantee only unique solutions to the autonomous differential equation. Therefore, the solution curves cannot touch, expect when they converge at equilibrium points.
+
+\ 
+
+#### Taylor Series Expansion
+
+The second method for performing stability analyses utilizes the Taylor Series expansion of $f$. 
+
+**Assumptions:** Suppose we are a small distance $\delta(0)$ away from fixed point $y_*$. Then $y(0)=y_*+\delta(0)$ and $y(t)=y_*+\delta(t)$. So, the Taylor Series of $f$ can be written as the following, such that the $y^*$ input represents the point where we perform stability analysis:
+
+
+$$f(y^*+\delta)=f(y^*)+\delta\frac{\partial f}{\partial y}(y^*)+o(\delta)$$
+
+\ 
+
+
+
+-------------------------
+
+
+## Example 1. One-Dimesnional ODE
+
 
 
 <div class="a">
+
 Consider the one-dimensional autonomous ODE:
 $$\frac{dy}{dt}=y(1-y)(2-y)$$
 
@@ -33,53 +234,50 @@ $$\frac{dy}{dt}=y(1-y)(2-y)$$
 
 ### Flow Field
 
-Consider the one-dimensional autonomous ODE:
-$$\frac{dy}{dt}=y(1-y)(2-y)$$
 
-$$\longrightarrow \hat y= \frac{dy}{dt}$$
-
-
-The following plots the flow field and various trajectories, adding **horizontal lines at equilibrium points**:
+The following plots the flow field and various trajectories, adding horizontal lines at equilibrium points:
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, out.width=350}
-library(phaseR)
-
-example2_flowField  <- flowField(
-  example2, 
-  xlim = c(0, 4), 
-  ylim = c(-1, 3), 
-  system ="one.dim", 
-  add = FALSE)
+example2_flowField  <- flowField(example2,
+                                 xlim = c(0, 2),
+                                 ylim = c(-1, 3),
+                                 system ="one.dim",
+                                 add = FALSE)
 
 grid()
 
-example2_nullclines <- nullclines(
-  example2, xlim = c(0, 4), ylim = c(-1, 3), system = "one.dim")
+example2_nullclines <- nullclines(example2,
+                                  xlim = c(0, 2),
+                                  ylim = c(-1, 3),
+                                  system = "one.dim",
+                                  col=c("#ff5ccd"),
+                                  ltw=2)
 
-example2_trajectory <- trajectory(
-  example2, 
-  y0 = c(-0.5, 0.5, 1.5, 2.5), 
-  tlim = c(0, 4), 
-  system = "one.dim")
+example2_trajectory <- trajectory(example2,
+                                  y0 = c(-0.5, 0.5, 1.5, 2.5),
+                                  tlim = c(0, 4),
+                                  system = "one.dim")
 
 ```
 
 
-### Find Fixed Points
+### Fixed Points
 
 
-The horizontal lines on the graph indicate that **3 equilibrium points have been identified at $y^*=0,1,2$**
+The horizontal lines on the graph indicate that three equilibrium points have been identified at $y^*=0,1,2$. If we set $\hat y=0,$ we can analytically solve for the three equilibrium points:
 
-If we set $\hat y=0,$ we can analytically solve for the 3 equilibrium points:
+$$
+\begin{align}
+y^* (1-y^* )(2-y^* ) &= 0 \\
+y^* &= 0, 1, 2
+\end{align}
+$$
 
-$$ y^* (1-y^* )(2-y^* )=0 \\
-\Longrightarrow y^*=0,1,2 $$
 
+### Stability of Fixed Points
 
-### Determine Stability of Fixed Points
-
-##### Method 1. `Phase Portrait`
+**Method 1.** Phase Portrait
 
 <div class="b1">
 
@@ -96,22 +294,33 @@ example2_phasePortrait <- phasePortrait(
 
 
 
-------------------------------
+\ 
 
 
-##### Method 2. `Taylor Series Approach`
+**Method 2.** Taylor Series Approach
 
 <div class="b1">
 
+$$
+\begin{align}
+\frac{dy}{dt}&=y (1-y )(2-y )  \\
+&= y^3-4y^2+2y
+\end{align}
+$$
+
 Using the Taylor Series approach we have:
 
-$$ \frac{d}{dy}\left.\left(\frac{dy}{dt}\right)\right|_{y=y^*} = 3y^{*^2} - 6y^* + 2 = \begin{cases} 2 &: \ y^*=0,\\ -1 &: \ y^*=1,\\ 2 &: \ y^*=2.  \end{cases} $$
+$$
+\begin{align}
+\frac{d}{dy}\left.\left(\frac{dy}{dt}\right)\right|_{y=y^*} &= 3y^{*^2} - 6y^* + 2 = \begin{cases} 2, & \ y^*=0,\\ -1 ,& \ y^*=1,\\ 2, & \ y^*=2.  \end{cases} 
+\end{align}
+$$
 
 </div>
 
 \ 
 
-We draw the same conclusion as from the phase portrait. We can confirm the Taylor analysis using `stability()` to check the **stability of each equilibrium point**:
+We draw the same conclusion as from the phase portrait. We can confirm the Taylor analysis using `stability()` to check the stability of each equilibrium point:
 
 
 ```{r, echo = F}
@@ -123,75 +332,155 @@ example2_stability_2 <- stability(
 
 example2_stability_3 <- stability(
   example2, ystar  = 2, system = "one.dim")
+```
 
+
+Hence we reach conclusion as above that $y^*=2$ is stable, and $y^*=-2$ is unstable. Therefore, if $y(0)>2$ or $0<y(0)<2$, then the solution will eventually approach $y=2$. However, if $y(0)<0$, $y\rightarrow-\infty$ as $t\rightarrow\infty$. 
+
+
+\ 
+
+
+
+-----------------------------------
+
+
+## Example 2. Two-Dimensional ODE
+
+Consider the Lotka-Volterra model, a simple two species competition model, used in ecology, given by the following:
+
+
+$$\frac{dx}{dt} = x-xy, \ \frac{dy}{dt} = xy-y$$
+
+
+
+<span class="sp3">a.</span> Plot the velocity field with several trajectories: 
+
+```{r, echo = F, fig.dim = c(7, 5)}
+lotkaVolterra_flowField    <- flowField(lotkaVolterra,
+                                        xlim       = c(0, 5), 
+                                        ylim       = c(0, 5),
+                                        parameters = c(1, 1, 1, 1),
+                                        add        = F)
+lotkaVolterra_trajectories <- trajectory(lotkaVolterra,
+                                         y0     = rbind(c(2, 2),
+                                                        c(0.5, 0.5),
+                                                        c(0.5, 1.5),
+                                                        c(1.5, 0.5),
+                                                        c(3, 3)),
+                                         parameters = c(1, 1, 1, 1),
+                                         col    = rep("black", 5),
+                                         tlim   = c(0, 100))
+```
+
+
+### Nullclines
+
+Here, $x$-nullclines are defined where $f(x,y)=0$, while the $y$-nullclines are defined where $g(x,y)=0$. Thus, the $x$- and $y$-nullclines define the locations where $x$ and $y$ do not change with time $t$. When plotting a vector field, it is a good idea to plot the nullclines first, because the line segments/vectors along the nullclines move parallel to the $x$- and $y$-axes.
+
+<span class="sp4">b.</span> Calculate and Sketch the Nullclines:
+
+$$
+\begin{align}
+\mathbf{\dot x = 0} \\ 
+& \mathrm{x-xy = 0} \ \Longrightarrow  \ x(1-y) = 0 \\
+& \Rightarrow  \mathbf{x=0} \text{ or } \mathbf{y=1},\\
+\mathbf{\dot y = 0}\\ 
+& \mathrm{xy-y = 0} \Rightarrow y(x-1) = 0 \\
+& \Rightarrow \mathbf{x=1} \text{ or } \mathbf{y=0}
+\end{align}
+$$
+
+Hence, the fixed points come out to be $\mathrm{(0, 0)}$ and $\mathrm{(1, 1)}$.
+
+
+
+```{r, echo = F,out.width=600}
+lotkaVolterra_flowField    <- flowField(lotkaVolterra,
+                                        xlim       = c(-1.5,1.5), 
+                                        ylim       = c(-1.5,1.5),
+                                        parameters = c(1, 1, 1, 1),
+                                        add        = F)
+lotkaVolterra_trajectories <- nullclines(lotkaVolterra,
+                                         xlim      = c(-1.5,1.5),
+                                         ylim      = c(-1.5,1.5),
+                                         col = c("aquamarine2", "blueviolet"),
+                                         parameters = c(1, 1, 1, 1),
+                                         points = 251)
 ```
 
 
 
-------------------------------
+### Equilibrium points and stability
+
+Equilibrium points defined as the Fixed points are at $(x_*,y_*)$ where:
+
+$$ f(x^*,y^*)=g(x^*,y^*)=0 $$
 
 
-##### Perturbation Analysis 
-
-* assuming higher order terms can be neglected
-
-Note $f(y^*)=0$, the autonomous ODE becomes:
-
-$$ \frac{d}{dt}(y^*+\delta)=\delta\frac{\partial f}{\partial y}(y^*) \Rightarrow \frac{d\delta}{dt}=\delta\frac{\partial f}{\partial y}(y^*)=k\delta. $$
-
-The above ODE for $\delta$ can be solved to give $\delta(t)=\delta(0)e^{kt}$. So, stability can be found depending on whether $\delta(t)$ grows or decays as $t$ increases:
-
-$$ k = \frac{\partial f}{\partial y}(y^*)\begin{cases} > 0 &: \ \text{Stable},\\ < 0 &: \ \text{Unstable}.  \end{cases} $$
-
-Here, $k$ can be called the discriminant
+<span class="sp5">c.</span> Taking partial derivatives we compute the Jacobian at any equilibrium point $(x^∗,y^∗)$:
 
 
--------------------------------
-
-Returning to the given example...
-
-$$ \frac{\partial f}{\partial y}(y^*) = -2y^*= \begin{cases} -4 &: \ y^*=2, \\ +4 &: \ y^* = -2. \end{cases}$$
-
-Hence we reach conclusion as above; 
-
-* $y^*=2$ is stable, and $y^*=-2$ is unstable 
-
-The above shows that we can state if $y(0)>2$ or $0<y(0)<2$ then the solution will eventually approach $y=2$. 
-
-However, if $y(0)<0$, $y\rightarrow-\infty$ as $t\rightarrow\infty$. 
-
-
-----------------------
-
-##### Taylor Series Conditions
-
-If $\mathcal{k}=0$,
-
-$$\Rightarrow\frac{\partial f}{\partial y}(y^*)=0, $$
-
-then to the order of the Taylor Series **no conclusion can be drawn about stability**. 
+$$
+\begin{align}
+\mathbf{A} &= 
+\begin{bmatrix} 
+\frac{\partial (x-xy)}{\partial x} &  \frac{\partial (x-xy)}{\partial y} \\
+\frac{\partial (xy-y)}{\partial x} & \frac{\partial (xy-y)}{\partial y} 
+\end{bmatrix} \\
+\\
+\mathbf{A}_{(x,y)} &=
+\begin{pmatrix} 
+\mathrm{1-y} &  \mathrm{-x} \\
+\mathrm{y} & \mathrm{x-1}
+\end{pmatrix}
+\end{align}
+$$
 
 
-----------------------
+For the fixed point $\mathbf{(0,0)}$
 
 
-### Summary
+$$
+\mathbf{A}_{(0,0)} =
+\left.\begin{pmatrix} 
+\mathrm{1} &  \mathrm{0} \\
+\mathrm{0} & \mathrm{-1}
+\end{pmatrix}\right|_{(0,0)}
+$$
 
-The above demonstrates the components necessary to perform qualitative analysis on a one-dimensional autonomous ODE. 
 
-`General Process:`
+So $\text{tr}(J)=T=0$ and $\text{det}(J)=\Delta=-1$; which from our table above makes $(0,0)$ a saddle point.
 
-<div class="a">
 
-<ol>
-<li>plot the flow field</li>
-<li>plot several trajectories one the flow field</li>
-<li>identify the equilibrium points</li>
-<li>choose a method to determine stability of equilibrium points</li>
-</ol>
+For the fixed point $\mathbf{(1,1)}$
 
-</div>
+$$
+\mathbf{A}_{(1,1)} =
+\left. \begin{pmatrix} 
+\mathrm{0} &  \mathrm{-1} \\
+\mathrm{1} & \mathrm{0}
+\end{pmatrix}\right|_{(1,1)}
+$$
 
+
+Therefore, $\text{tr}(J)=T=0$ and $\text{det}(J)=\Delta=1$; which from our table above makes $(1,1)$ a centre. 
+
+
+If we look back at our earlier plot, we can observe trajectories diverging away from $(0,0)$, but traversing around $(1,1)$. 
+
+\ 
+
+<span class="sp6">d.</span> Plot the Oscillating Nature
+
+Here we plot $x$ and $y$ trajectories against $t$. For the case of $(x_0,y_0)=(3,4)$ in this example system this results in the following plot which we can view the oscillating nature of $x$ and $y$:
+
+```{r, echo = F, fig.dim = c(7, 5)}
+lotkaVolterra_numericalSolution <- numericalSolution(lotkaVolterra,
+                                                     y0 = c(3, 4),
+                                                     tlim = c(0, 50),
+                                                     parameters = c(1, 1, 1, 1))
+```
 
 
 
@@ -199,129 +488,195 @@ The above demonstrates the components necessary to perform qualitative analysis 
 
 
 
-## Example 2. Logistic Growth Model
+## Example 3. Wilson-Cowan Model
+
+The Wilson-Cowan System is a coupled, nonlinear, differential equation for the excitatory and inhibitory populations' firing rates of neurons: 
+
+$$\tau_e \frac{dE}{dt} = -E + (k_e - r_e E) \, S_e(c_1 E - c_2 I + P)$$
 
 
-<div class="b1">
-
-The logistic growth model is used in biology to model the growth of a population under density dependence. 
-
-$$ \frac{dy}{dt} = \beta y\left(1-\frac{y}{K}\right). $$
-
-</div>
-
-\ 
-
-Letting $\beta=1$ and $K=2$, the following plots the flow field and several trajectories, along with added horizontal lines to indicate equilibrium points.
+$$\tau_i \frac{dI}{dt} = -I + (k_i - r_i I) \, S_i(c_3 E - c_4 I + Q),$$
 
 
-```{r echo=FALSE, out.width=300, message=FALSE}
-library(phaseR)
-logistic_flowField  <- flowField(
-  logistic,
-  xlim= c(0, 5),
-  ylim= c(-1, 3),
-  parameters = c(1, 2),
-  system= "one.dim",
-  add= FALSE)
+In our numerical search of the steady-state points, we study the cases where the derivatives of $E$ and $I$ are zero. Since the system is highly nonlinear, we have to do it numerically. First, we draw the flow field and then draw the nullclines of the system. The $x$-nullclines are defined by $f(x,y)=0$, and the $y$-nullclines are defined by $g(x, y)=0$. These are the locations where $x$ and $y$ do not change with time. 
 
-grid()
+**Limit Cycles.** Non-linear systems can exhibit a type of behavior known as a limit cycle. If there is only one steady-state solution, and if the steady-state solution is unstable, a limit cycle will occur. In the following, we define the parameters for satisfying conditions 18 and 20 as $c_1=16$, $c_2 = 12$, $c_3=15$, $c_4=3$, $a_e = 1.3$, $\theta_e=4$, $a_i=2$, $\theta_i = 3.7$, $r_e=1$ and $r_i=1$. We can determine a steady-state solution by the intersection of the nullclines as follows. 
 
-logistic_nullclines <- nullclines(
-  logistic,xlim= c(0, 5),ylim= c(-1, 3),
-  parameters = c(1, 2),
-  system= "one.dim")
 
-logistic_trajectory <- trajectory(
-  logistic,y0= c(-0.5, 0.5, 1.5, 2.5),
-  tlim= c(0, 5),
-  parameters = c(1, 2),
-  system= "one.dim")
+
+
+```{r}
+se <- function(x){
+  ae=1.3
+  theta_e=4
+  1/(1+exp(-ae*(x-theta_e)))
+}
+
+si <- function(x){
+  ai=2
+  theta_i= 3.7
+  1/(1+exp(-ai*(x-theta_i)))
+}
 
 ```
 
 
-<div class="a">
 
-From the horizontal lines graphed above, we can identify 2 equilibrium points at $y=0 \,\,\text{and } y=K$
+```{r}
+WilsonCowan2 <- function(t, y, parameters) {
+  # couplings
+  c1 = 16
+  c2 = 12
+  c3 = 15
+  c4 = 3
+  
+  # Refractory periods
+  rE = 1
+  rI = 1
+  
+  # external inputs
+  P = 1.25
+  Q = 0
+  
+  ki=0.825
+  ke=0.88
+  I <- y[1]
+  E <- y[2]
+  dy <- c(
+     -I + (ki - rI * I) * si(c3 * E - c4 * I + Q),
+     -E + (ke - rE * E) * se(c1 * E - c2 * I + P))
+  list(dy)
+}
+```
 
-</div>
+
+
+```{r}
+body_cap8 <- fig_nums(name = "phase8", caption = "Phase Plane Analysis. Determine the steady-state solution by the nullclines' intersection. Parameters: $c_1=16$, $c_2 = 12$, $c_3=15$, $c_4=3$, $a_e = 1.3$, $\\theta_e=4$, $a_i=2$, $\\theta_i = 3.7$, $r_e=1$, $r_i=1$.")
+```
+
+
+
+```{r, fig.cap=body_cap8, fig.show='hold', message=FALSE}
+example4_flowField  <- flowField(WilsonCowan2,
+                                 xlim = c(-0.01, .425),
+                                 ylim = c(0, .5),
+                                 add  = FALSE,
+                                 ylab = TeX("$E$"),
+                                 xlab= TeX("$I$"),
+                                 frac=1)
+grid()
+example4_nullclines <- nullclines(WilsonCowan2,
+                                  xlim = c(-0.01, .425),
+                                  ylim = c(0, .5),
+                                  lty = 2, lwd = 2,
+                                  col=c("lightseagreen","aquamarine4"))
+
+```
+
+
+
+
+
+In the phase plane, the limit cycle is an isolated closed orbit, where "closed" means the periodicity of movement, and "isolated" means the limit of motion, where nearby trajectories converge or deviate. We can alter our initial values of $E_0$ and $I_0$ to obtain different paths in the phase space.
+
+
+```{r}
+body_cap9 <- fig_nums(name = "phase9", caption = "Phase Plane Analysis showing limit cycle trajectory in response to constant simulation $P=1.25$. Dashed lines are nullclines. Parameters: $c_1=16$, $c_2 = 12$, $c_3=15$, $c_4=3$, $a_e = 1.3$, $\\theta_e=4$, $a_i=2$, $\\theta_i = 3.7$, $r_e=1$, $r_i=1$.")
+```
+
+
+
+```{r Final, fig.cap=body_cap9, fig.show='hold', message=FALSE}
+example4_flowField  <- flowField(WilsonCowan2,
+                                 xlim = c(-0.01, .425),
+                                 ylim = c(0, .5),
+                                 add  = FALSE,
+                                 ylab = TeX("$E$"),
+                                 xlab= TeX("$I$"),
+                                 frac=1)
+grid()
+example4_nullclines <- nullclines(WilsonCowan2,
+                                  xlim = c(-0.01, .425),
+                                  ylim = c(0, .5),
+                                  lty = 2, lwd = 2,
+                                  col=c("lightseagreen","aquamarine4"))
+
+y0 <- matrix(c(0.1,0.3,
+               0,0,
+               0.1,0.2), 3, 2, byrow = TRUE)
+example4_trajectory <- trajectory(WilsonCowan2,
+                                  y0   = y0,
+                                  pch=16,
+                                  tlim = c(0, 100),
+                                  col="black",
+                                  add=T, ylab=TeX("$E, I$"), xlab=TeX("$t$"))
+grid()
+```
+
+
+The phase plane analysis illustrates a bounded steady-state solution that is classified as unstable; this is a typical feature of a limit cycle. The solution's oscillating behavior, shown in Figure 10, follows typical limit cycle behavior:
+
+- Trajectories near the equilibrium point are pushed further away from the equilibrium.
+- Trajectories far from the equilibrium point move closer toward the equilibrium.
+
+
+
+We established the resting state $E=0, I=0$ to be stable in the absence of an outside force. Therefore, the neural population only exhibits limit cycle activity in response to a constant external input (P or Q). All in all, the premise of Theorem 3 is that there is only one steady-state, and it must be near the inflection point for a limit cycle to exist. Therefore, if we study the limit behavior as a function of $P$, where $Q=0$, then it follows that: 
+
+- There is a threshold value of P, and below this threshold, the limit cycle activity cannot occur.
+- There is a higher value of P, and above this bound, the system's limit cycle activity will cease.
+- Within the range defined above, both the limit cycle frequency and the average value of $E(t)$ increases monotonically with respect to $P$.
+
+
+
+```{r}
+body_cap10 <- fig_nums(name = "phase10", caption = "$I(t)$ and $E(t)$ for limit cycle shown above. The limit cycle depends on the value of $P$, i.e. $Q$ being set equal to zero.")
+```
+
 
 \ 
 
-<div class="b1">
 
-We can confirm these equilibrium points by analytically solving for $\dot y =0$
+```{r echo=FALSE, fig.cap=body_cap10, fig.show='hold', out.width=350 , message=FALSE, warning=FALSE}
 
+example4_solution <- numericalSolution(WilsonCowan2,
+                        y0 = c(0.0, 0.1),
+                        type = "two",
+                        col=c("cornflowerblue", "aquamarine4"),
+                        add.legend = T,
+                        xlab = TeX("$t$"),
+                        ylab = c(TeX("$I$"), TeX("$E$")),
+                        add.grid = F,
+                        tlim = c(0,20),
+                        lwd=2,
+                        ylim=c(0,0.3),
+                        xlim=c(0,18))
+```
 
-$$ \beta y^* \left(1-\frac{y^*}{K}\right)=0 \\ \Longrightarrow y^*=0,\;K $$
-
-</div>
 
 
 
 ---------------------------
 
-Next, we plot the **phase portrait**:
+### Summary
 
-
-```{r echo=F, out.width=300, message=FALSE}
-logistic_phasePortrait <- phasePortrait(
-  logistic,
-  ylim= c(-0.5, 2.5),
-  parameters = c(1, 2))
-
-```
 
 <div class="a">
 
-From the phase portrait, we can observe that **$y^*=0$ is unstable and $y^*=K$ stable**, for the case $\beta=1$ and $K=2$.
+The above demonstrates the components necessary to perform qualitative analysis on a one-dimensional autonomous ODE:
+
+- plot the flow field
+- plot several trajectories one the flow field
+- identify the equilibrium points
+- choose a method to determine stability of equilibrium points
 
 </div>
 
 
-
------------------------------
-
-If we use `Taylor Series method` we can draw the same conclusion:
-
-<div class="b1">
-
-$$ \frac{d}{dy}\left.\left(\frac{dy}{dt}\right)\right|_{y=y^*} = \beta - \frac{2\beta y^*}{K} = \begin{cases} \beta &: \ y^*=0,\\ -\beta &: \ y^*=K.  \end{cases} $$
+---------------------------
 
 
-
-So for $\beta=1$ and $K=2$, we have a stable point at $y=2$. So, we can see that the point $y=K$ will in general be stable provided $\beta>0$.
-
-</div>
-
-\ 
-
-
-The following code verifies the above results for the stabilities of the equilibrium points:
-
-
-```{r, echo = T}
-## equilibrium point y*=0
-logistic_stability_1 <- stability(
-  logistic,
-  ystar= 0,
-  parameters = c(1, 2),
-  system= "one.dim")
-
-## equilibrium point y*=K
-logistic_stability_2 <- stability(
-  logistic,
-  ystar= 2,
-  parameters = c(1, 2),
-  system= "one.dim")
-
-```
-
-
-
-
--------------------------
 
 ### References
 

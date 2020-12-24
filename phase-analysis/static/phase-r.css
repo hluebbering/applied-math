@@ -1,61 +1,177 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&family=Roboto+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Trocchi&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Karla&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Vollkorn&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
 h1 {
-  font-family: 'Trocchi', sans-serif;
+  font-family: 'Noto Serif TC', serif;
+  color: black;
+  font-size:28px;
+}
+h1.title {
+  font-family: 'Noto Serif TC', serif;
+  color: black;
+  font-size:28px;
+}
+.author{
+  font-family: 'Noto Serif TC', serif;
+  color: #f4bbff;
+  font-size:14px;
+  padding: 2px;
+}
+
+.date{
+  font-family: 'Noto Serif TC', serif;
+  color: #f4bbff;
+  font-size:14px;
+  padding: 2px;
+}
+
+.subtitle{
+  font-family: 'Noto Serif TC', serif;
+  color: #4d648d;
   font-size:18px;
-  padding:14px;
+}
+figure{
+  font-family: 'Vollkorn', serif;
+}
+
+.figure{
+  font-family: 'Vollkorn', serif;
 }
 
 h2 {
-  font-family: 'Open Sans', sans-serif;
-  font-size:16px;
-  padding: 8px;
-  text-indent:4px;
+  font-family: 'Noto Serif TC', serif;
+  color:#4d648d;
+  font-size:24px;
 }
 h3 {
-  font-family: 'Open Sans', sans-serif;
-  font-size:12px;
-  text-indent:4px;
-  text-shadow: 4px 4px 4px #aaa;
+  color: #536872;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 16px;
 }
-
-
-h4 {
-  font-family: 'Open Sans', sans-serif;
-  font-size:14px;
-  padding: 8px;
-  text-indent:4px;
-  text-shadow: 4px 4px 4px #aaa;
+h4{
+  color:#458B74;
+  text-shadow: #9CCCB8;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 14px;
 }
-
 h5 {
-  font-family: 'Open Sans', sans-serif;
-  font-size:12px;
-  padding: 8px;
-  text-indent:4px;
-  text-shadow: 4px 4px 4px #aaa;
-}
-
-.b1 {
-  color: black;
-  background: #f9fafb;
-  font-size: 10px;
-  padding: 8px;
-  border-radius: 12px;
-  margin: auto;
-  width: 90%;
-  box-shadow: 4px 4px 4px #aaa;
+  color:#8FBC8F;
+  text-shadow: #9CCCB8;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 13px;
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
-  background-color: #fff;
+  font-family: "Times New Roman", Times, serif;
+  margin: 8px;
+  font-size: 14px;
+  
+}
+p {
+  font-size: 14px;
   color: black;
-  white-space: normal;
-  font-size: 10px;
-  text-indent: 10px;
+  margin-right: 8px;
+  margin-left: 8px;
+}
 
+li {
+  font-size: 13px;
+  text-indent:0;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+
+.a1 {
+  color: black;
+  font-family: 'Vollkorn', serif;
+  font-size: 14px;
+  border-radius: 25px;
+  width: 88%;
+  background: #88d8c0;
+  margin: auto;
+  box-shadow: 4px 4px 4px #aaa;
+  padding: 8px;
+}
+a {
+  color: #f88379;
+}
+
+.a2 {
+  color: black;
+  font-family: 'Vollkorn', serif;
+  font-size: 14px;
+  border-radius: 25px;
+  width: 88%;
+  background: #C1CDC1;
+  margin: auto;
+  box-shadow: 4px 4px 4px #aaa;
+  padding: 8px;
+}
+
+.a3 {
+  color: black;
+  font-family: 'Vollkorn', serif;
+  font-size: 14px;
+  border-radius: 25px;
+  width: 88%;
+  background: #8FBC8F;
+  margin: auto;
+  box-shadow: 4px 4px 4px #aaa;
+  padding: 8px;
+}
+.a4 {
+  color: black;
+  font-family: 'Vollkorn', serif;
+  font-size: 14px;
+  border-radius: 25px;
+  width: 88%;
+  background: #6FB099;
+  margin: auto;
+  box-shadow: 4px 4px 4px #aaa;
+  padding: 8px;
+}
+.a5 {
+  color: black;
+  font-family: 'Vollkorn', serif;
+  font-size: 14px;
+  border-radius: 25px;
+  width: 88%;
+  background: #EAF8EA;
+  margin: auto;
+  box-shadow: 4px 4px 4px #aaa;
+  padding: 8px;
+}
+.a6 {
+  color: black;
+  font-family: 'Vollkorn', serif;
+  font-size: 14px;
+  border-radius: 25px;
+  width: 88%;
+  background: #838B83;
+  margin: auto;
+  box-shadow: 4px 4px 4px #aaa;
+  padding: 8px;
+}
+
+
+.b1 {
+  color: black;
+  font-family: 'Vollkorn', serif;
+  font-size: 14px;
+  border-radius: 25px;
+  width: 88%;
+  background: #f9fafb;
+  margin: auto;
+  box-shadow: 4px 4px 4px #aaa;
+  padding: 8px;
 }
 
 .a{
@@ -100,4 +216,232 @@ a:hover {
   color: #ffc7f9;
   font-family: 'Open Sans', sans-serif;
   font-size:10px;
+}
+
+.sp1 {
+  font-family: 'Trocchi', sans-serif;
+  color:#ACA4E2;
+  text-decoration: bold;
+  font-size:19px;
+  padding: 1px;
+  margin-left:-6px;
+}
+.sp2 {
+  font-family: 'Trocchi', sans-serif;
+  color:#abcdef;
+  text-decoration: bold;
+  font-size:19px;
+  padding: 1px;
+  margin-left:-6px;
+}
+.sp3 {
+  font-family: 'Trocchi', sans-serif;
+  color:#e7accf;
+  text-decoration: bold;
+  font-size:19px;
+  padding: 1px;
+  margin-left:-6px;
+}
+.sp4 {
+  font-family: 'Trocchi', sans-serif;
+  color:#008080;
+  text-decoration: bold;
+  font-size:19px;
+  padding: 1px;
+  margin-left:-6px;
+}
+.sp5 {
+  font-family: 'Trocchi', sans-serif;
+  color:#f1a7fe;
+  text-decoration: bold;
+  font-size:19px;
+  padding: 1px;
+  margin-left:-6px;
+}
+.sp6 {
+  font-family: 'Trocchi', sans-serif;
+  color:#ffcba4;
+  text-decoration: bold;
+  font-size:19px;
+  padding: 1px;
+  margin-left:-6px;
+}
+.sp7 {
+  font-family: 'Trocchi', sans-serif;
+  color:#fba0e3;
+  text-decoration: bold;
+  font-size:19px;
+  padding:0;
+  margin-left:-6px;
+}
+.sp8 {
+  font-family: 'Trocchi', sans-serif;
+  color:#38BDBB;
+  text-decoration: bold;
+  font-size:19px;
+  padding:0;
+  margin-left:-6px;
+}
+.sp9 {
+  font-family: 'Trocchi', sans-serif;
+  color:#5CBD92;
+  text-decoration: bold;
+  font-size:19px;
+  padding:0;
+  margin-left:-6px;
+}
+.sp10 {
+  font-family: 'Trocchi', sans-serif;
+  color:#efbbcc;
+  text-decoration: bold;
+  font-size:19px;
+  padding:0;
+  margin-left:-6px;
+}
+.sp11 {
+  font-family: 'Trocchi', sans-serif;
+  color:#967bb6;
+  text-decoration: bold;
+  font-size:19px;
+  padding:0;
+  margin-left:-6px;
+}
+.sp12 {
+  font-family: 'Trocchi', sans-serif;
+  color:#B4EEB4;
+  text-decoration: bold;
+  font-size:19px;
+  padding:0;
+  margin-left:-6px;
+}
+.sp13 {
+  font-family: 'Trocchi', sans-serif;
+  color:#ECD999;
+  text-decoration: bold;
+  font-size:19px;
+  padding:0;
+  margin-left:-6px;
+}
+
+.sp14 {
+  font-family: 'Trocchi', sans-serif;
+  color:#F2F2F2;
+  text-decoration: bold;
+  font-size:19px;
+  padding:0;
+  margin-left:-6px;
+}
+
+.lp1 {
+  font-family: 'Trocchi', sans-serif;
+  color:#ACA4E2;
+  text-decoration: bold;
+  font-size:17px;
+  padding:1px;
+  margin-left: 12px;
+}
+.lp2 {
+  font-family: 'Trocchi', sans-serif;
+  color:#abcdef;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
+}
+.lp3 {
+  font-family: 'Trocchi', sans-serif;
+  color:#e7accf;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
+}
+.lp4 {
+  font-family: 'Trocchi', sans-serif;
+  color:#008080;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
+}
+.lp5 {
+  font-family: 'Trocchi', sans-serif;
+  color:#f1a7fe;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
+}
+.lp6 {
+  font-family: 'Trocchi', sans-serif;
+  color:#ffcba4;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
+}
+.lp7 {
+  font-family: 'Trocchi', sans-serif;
+  color:#fba0e3;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
+}
+.lp8 {
+  font-family: 'Trocchi', sans-serif;
+  color:#38BDBB;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
+}
+.lp9 {
+  font-family: 'Trocchi', sans-serif;
+  color:#5CBD92;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
+}
+.lp10 {
+  font-family: 'Trocchi', sans-serif;
+  color:#efbbcc;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
+}
+.lp11 {
+  font-family: 'Trocchi', sans-serif;
+  color:#967bb6;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
+}
+.lp12 {
+  font-family: 'Trocchi', sans-serif;
+  color:#B4EEB4;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
+}
+.lp13 {
+  font-family: 'Trocchi', sans-serif;
+  color:#ECD999;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
+}
+
+.lp14 {
+  font-family: 'Trocchi', sans-serif;
+  color:#F2F2F2;
+  text-decoration: bold;
+  font-size:17px;
+  padding: 1px;
+  margin-left: 12px;
 }
