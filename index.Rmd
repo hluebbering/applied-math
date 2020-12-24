@@ -23,7 +23,7 @@ fig_nums <- captioner(prefix = "Figure")
 ```
 
 
-**phaseR**: An R package for phase plane analysis of one and two-dimensional autonomous ODE systems [@grayling2014]. The phaseR package uses stability analysis to classify equilibrium points. Specifically, the package uses the Taylor Series method to define equilibrium points for a one dimensional ODE system.
+**phaseR**: An R package for phase plane analysis of one and two-dimensional autonomous ODE systems [@grayling2014]. The phaseR package uses stability analysis to classify equilibrium points.
 
 
 ## Fixed Points and Phase Portraits
@@ -681,7 +681,6 @@ The above demonstrates the components necessary to perform qualitative analysis 
 
 
 ---------------------------
-
 
 
 ### References
